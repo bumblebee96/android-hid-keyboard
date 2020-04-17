@@ -10,7 +10,17 @@
 package net.tjado.hidkeyboard;
 
 public interface OutputInterface {
-    public enum Language { en_US, en_GB, de_DE, AppleMac_de_DE, de_CH, fr_CH, neo }
+    public enum Language
+    {
+        en_US,
+        en_GB,
+        de_DE,
+        AppleMac_de_DE,
+        de_CH,
+        fr_CH,
+        neo
+    }
+
     public boolean setLanguage(OutputInterface.Language lang);
     public int sendText(String text) throws Exception;
     public int sendReturn() throws Exception;

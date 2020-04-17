@@ -16,8 +16,7 @@ import java.util.NoSuchElementException;
 
 public class OutputUsbKeyboardAsRoot implements OutputInterface
 {
-
-    private String devicePath = "/dev/hidg0";
+    private final String devicePath = "/dev/hidg0";
     private UsbHidKbd kbdKeyInterpreter;
 
     private static final String TAG = "OutputUsbKeyboardAsRoot";
@@ -35,7 +34,7 @@ public class OutputUsbKeyboardAsRoot implements OutputInterface
 
     public boolean setLanguage(Language lang) {
 
-        String className = "net.tjado.authorizer.UsbHidKbd_" + lang;
+        String className = "net.tjado.hidkeyboard.UsbHidKbd_" + lang;
 
         try {
             kbdKeyInterpreter = (UsbHidKbd) Class.forName(className).newInstance();
@@ -92,7 +91,7 @@ public class OutputUsbKeyboardAsRoot implements OutputInterface
         //String command = String.format("echo %s | xxd -r -p > %s\n", scancodesHex, devicePath);
 
         // Using printf instead of echo with xxd - this should provide a better compability
-        scancodesHex = scancodesHex.replaceAll("(.{2})", "\\\\x$1");;
+        scancodesHex = scancodesHex.replaceAll("(.{2})", "\\\\x$1");
         String command = String.format("printf '%s' > %s\n", scancodesHex, devicePath);
 
         Utilities.dbginfo(TAG,  "Handing over to ExecuteAsRootUtil -> " + command );
@@ -107,7 +106,7 @@ public class OutputUsbKeyboardAsRoot implements OutputInterface
         return cr;
     }
 
-    public int sendSingleKey(String keyName) throws IOException
+    private int sendSingleKey(String keyName) throws IOException
     {
         byte[] scancode;
         int ret = 0;
@@ -144,8 +143,7 @@ public class OutputUsbKeyboardAsRoot implements OutputInterface
     }
 
 
-    public void sendScancode(byte[] output) throws FileNotFoundException,
-                                                   IOException
+    public void sendScancode(byte[] output) throws FileNotFoundException, IOException
     {
         if( output.length == 8) {
             Utilities.dbginfo(TAG, Utilities.bytesToHex(output) );
@@ -158,5 +156,4 @@ public class OutputUsbKeyboardAsRoot implements OutputInterface
         }
 
     }
-
 }

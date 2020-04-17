@@ -17,10 +17,9 @@ import java.util.NoSuchElementException;
 
 public class OutputUsbKeyboard implements OutputInterface
 {
-
-    protected String devicePath = "/dev/hidg0";
-    protected FileOutputStream device;
-    UsbHidKbd kbdKeyInterpreter;
+    private final String devicePath = "/dev/hidg0";
+    private FileOutputStream device;
+    private UsbHidKbd kbdKeyInterpreter;
 
     private static final String TAG = "OutputUsbKeyboard";
 
@@ -37,7 +36,7 @@ public class OutputUsbKeyboard implements OutputInterface
 
     public boolean setLanguage(OutputInterface.Language lang) {
 
-        String className = "net.tjado.authorizer.UsbHidKbd_" + lang;
+        String className = "net.tjado.hidkeyboard.UsbHidKbd_" + lang;
 
         try {
             kbdKeyInterpreter = (UsbHidKbd) Class.forName(className).newInstance();
@@ -62,7 +61,9 @@ public class OutputUsbKeyboard implements OutputInterface
             if (device != null) {
                 device.close();
             }
-        } catch (Exception e) {}
+        } catch (Exception e) {
+            Utilities.dbginfo(TAG, e, "Error closing");
+        }
     }
 
     private void clean() throws IOException
@@ -101,7 +102,17 @@ public class OutputUsbKeyboard implements OutputInterface
         return ret;
     }
 
-    public int sendSingleKey(String keyName) throws IOException
+    public int sendReturn() throws IOException
+    {
+        return sendSingleKey("return");
+    }
+
+    public int sendTabulator() throws IOException
+    {
+        return sendSingleKey("tabulator");
+    }
+
+    private int sendSingleKey(String keyName) throws IOException
     {
 
         byte[] scancode;
@@ -123,19 +134,7 @@ public class OutputUsbKeyboard implements OutputInterface
         return ret;
     }
 
-    public int sendReturn() throws IOException
-    {
-        return sendSingleKey("return");
-    }
-
-    public int sendTabulator() throws IOException
-    {
-        return sendSingleKey("tabulator");
-    }
-
-
-    public void sendScancode(byte[] output) throws FileNotFoundException,
-                                                   IOException
+    private void sendScancode(byte[] output) throws FileNotFoundException, IOException
     {
 
         if( output.length == 8) {
@@ -153,5 +152,4 @@ public class OutputUsbKeyboard implements OutputInterface
         }
 
     }
-
 }
