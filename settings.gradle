@@ -1,2 +1,1 @@
-include ':lib'
-include ':authorizer'
+rootProject.name = 'android-hid-keyboard'

@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Authorizer.iml" filepath="$PROJECT_DIR$/Authorizer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android-hid-keyboard.iml" filepath="$PROJECT_DIR$/android-hid-keyboard.iml" group="android-hid-keyboard" />
       <module fileurl="file://$PROJECT_DIR$/authorizer/authorizer.iml" filepath="$PROJECT_DIR$/authorizer/authorizer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/code-android-hid-keyboard.iml" filepath="$PROJECT_DIR$/.idea/modules/code-android-hid-keyboard.iml" group="android-hid-keyboard" />
       <module fileurl="file://$PROJECT_DIR$/lib/lib.iml" filepath="$PROJECT_DIR$/lib/lib.iml" />
     </modules>
   </component>
