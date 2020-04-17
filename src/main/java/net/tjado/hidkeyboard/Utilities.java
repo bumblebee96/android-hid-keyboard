@@ -9,69 +9,36 @@
 
 package net.tjado.hidkeyboard;
 
-//import android.util.Log;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Utilities
 {
-
+    private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     public static final boolean DEBUG = true;
 
     public static String bytesToHex(byte[] in) {
         final StringBuilder builder = new StringBuilder();
+
         for(byte b : in) {
             builder.append(String.format("%02x", b));
         }
+
         return builder.toString();
     }
-
-    public static byte[] hexStringToByteArray(String s) {
-        int len = s.length();
-        byte[] data = new byte[len / 2];
-        for (int i = 0; i < len; i += 2) {
-            data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4)
-                                  + Character.digit(s.charAt(i + 1), 16));
-        }
-        return data;
-    }
-
-    public static String formatString(String str) {
-        if (str != null) {
-            str = str.replaceAll("\\r\\n|\\r|\\n", " ");
-        }
-        return str;
-    }
-
-    /** To be more independent of the PasswdSafe code, some code is duplicated */
 
 
     /** Log a debug message at info level */
     public static void dbginfo(String tag, String msg)
     {
-        if (DEBUG);
-            //Log.i(tag, msg);
+        if (DEBUG)
+            LOGGER.log(Level.INFO, tag + " : " + msg);
     }
 
     /** Log a debug message and exception at info level */
     public static void dbginfo(String tag, Throwable t, String msg)
     {
-        if (DEBUG);
-            //Log.i(tag, msg, t);
-    }
-
-    /** Log a formatted debug message at info level */
-    public static void dbginfo(String tag, String fmt, Object... args)
-    {
-        if (DEBUG) {
-            //Log.i(tag, String.format(fmt, args));
-        }
-    }
-
-    /** Log a formatted debug message and exception at info level */
-    public static void dbginfo(String tag, Throwable t,
-                               String fmt, Object... args)
-    {
-        if (DEBUG) {
-            //Log.i(tag, String.format(fmt, args), t);
-        }
+        if (DEBUG)
+            LOGGER.log(Level.INFO, tag + " : " + msg, t);
     }
 }

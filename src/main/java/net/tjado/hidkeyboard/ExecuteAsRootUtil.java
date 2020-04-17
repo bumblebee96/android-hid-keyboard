@@ -9,11 +9,9 @@
 
 package net.tjado.hidkeyboard;
 
-//import android.util.Log;
-
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /*
  * Class by muzikant <http://stackoverflow.com/users/624109/muzikant>
@@ -25,6 +23,7 @@ import java.io.IOException;
 
 public class ExecuteAsRootUtil
 {
+    private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
     public static boolean canRunRootCommands()
     {
@@ -36,7 +35,9 @@ public class ExecuteAsRootUtil
             suProcess = Runtime.getRuntime().exec("su");
 
             DataOutputStream os = new DataOutputStream(suProcess.getOutputStream());
-            DataInputStream osRes = new DataInputStream(suProcess.getInputStream());
+            //DataInputStream osRes = new DataInputStream(suProcess.getInputStream());
+            BufferedReader osRes
+                    = new BufferedReader(new InputStreamReader(suProcess.getInputStream()));
 
             if (null != os && null != osRes)
             {
@@ -50,19 +51,19 @@ public class ExecuteAsRootUtil
                 {
                     retval = false;
                     exitSu = false;
-                    //Log.d("ROOT", "Can't get root access or denied by user");
+                    LOGGER.log(Level.INFO, "ROOT : Can't get root access or denied by user");
                 }
                 else if (true == currUid.contains("uid=0"))
                 {
                     retval = true;
                     exitSu = true;
-                    //Log.d("ROOT", "Root access granted");
+                    LOGGER.log(Level.INFO, "ROOT : Root access granted");
                 }
                 else
                 {
                     retval = false;
                     exitSu = true;
-                    //Log.d("ROOT", "Root access rejected: " + currUid);
+                    LOGGER.log(Level.INFO, "ROOT : Root access rejected: " + currUid);
                 }
 
                 if (exitSu)
@@ -78,7 +79,7 @@ public class ExecuteAsRootUtil
             // Probably broken pipe exception on trying to write to output stream (os) after su failed, meaning that the device is not rooted
 
             retval = false;
-            //Log.d("ROOT", "Root access rejected [" + e.getClass().getName() + "] : " + e.getMessage());
+            LOGGER.log(Level.INFO, "ROOT : Root access rejected [" + e.getClass().getName() + "] : " + e.getMessage());
         }
 
         return retval;
@@ -118,24 +119,23 @@ public class ExecuteAsRootUtil
                 }
                 catch (Exception ex)
                 {
-                    //Log.e("ROOT", "Error executing root action", ex);
+                    LOGGER.log(Level.WARNING, "ROOT : Error executing root action", ex);
                 }
             }
         }
         catch (IOException ex)
         {
-            //Log.w("ROOT", "Can't get root access", ex);
+            LOGGER.log(Level.WARNING, "ROOT : Can't get root access", ex);
         }
         catch (SecurityException ex)
         {
-            //Log.w("ROOT", "Can't get root access", ex);
+            LOGGER.log(Level.WARNING, "ROOT : Can't get root access", ex);
         }
         catch (Exception ex)
         {
-            //Log.w("ROOT", "Error executing internal operation", ex);
+            LOGGER.log(Level.WARNING, "ROOT : Error executing internal operation", ex);
         }
 
         return retval;
     }
-
 }
